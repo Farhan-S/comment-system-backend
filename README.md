@@ -83,25 +83,31 @@ npm start
 
 ```
 src/
-├── config/              # Configuration files
-│   ├── env.ts          # Environment variables
-│   └── db.ts           # MongoDB connection
-├── modules/            # Feature modules
-│   ├── auth/           # Authentication module ✅
+├── config/                  # Configuration files
+│   ├── env.ts              # Environment variables
+│   └── db.ts               # MongoDB connection
+├── modules/                # Feature modules
+│   ├── auth/               # Authentication module ✅
 │   │   ├── auth.controller.ts
 │   │   ├── auth.service.ts
 │   │   ├── auth.middleware.ts
+│   │   ├── auth.validation.ts
 │   │   └── auth.routes.ts
-│   ├── users/          # User model ✅
+│   ├── users/              # User model ✅
 │   │   └── user.model.ts
-│   └── comments/       # Comments module (coming soon)
-├── middlewares/        # Express middlewares
+│   └── comments/           # Comments module ✅
+│       ├── comment.model.ts
+│       ├── comment.service.ts
+│       ├── comment.controller.ts
+│       ├── comment.validation.ts
+│       └── comment.routes.ts
+├── middlewares/            # Express middlewares
 │   └── error.middleware.ts
-├── utils/              # Utility functions
-│   ├── jwt.ts          # JWT helpers
-│   └── AppError.ts     # Custom error class
-├── app.ts              # Express app setup
-└── server.ts           # Server entry point
+├── utils/                  # Utility functions
+│   ├── jwt.ts              # JWT helpers
+│   └── AppError.ts         # Custom error class
+├── app.ts                  # Express app setup
+└── server.ts               # Server entry point
 ```
 
 ## API Endpoints
@@ -114,9 +120,18 @@ src/
 
 📖 See [AUTH_API.md](./AUTH_API.md) for detailed API documentation and testing guide.
 
-- `POST /api/auth/login` - Login user
+### Comments ✅ COMPLETED
 
-### Comments
+- `GET /api/comments` - Get all comments (pagination, sorting)
+- `GET /api/comments/:id` - Get single comment
+- `POST /api/comments` - Create comment (protected)
+- `PUT /api/comments/:id` - Update comment (protected, author only)
+- `DELETE /api/comments/:id` - Delete comment (protected, author only)
+- `POST /api/comments/:id/like` - Like comment (protected)
+- `POST /api/comments/:id/dislike` - Dislike comment (protected)
+- `GET /api/comments/:id/replies` - Get comment replies
+
+📖 See [COMMENTS_API.md](./COMMENTS_API.md) for detailed API documentation and testing guide.
 
 - `GET /api/comments` - Get all comments (with pagination/sorting)
 - `POST /api/comments` - Create new comment
