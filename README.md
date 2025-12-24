@@ -53,14 +53,24 @@ cp .env.example .env
 
 ## Environment Variables
 
+**⚠️ IMPORTANT FOR EVALUATORS:** The `.env` file with working MongoDB Atlas credentials is included in the repository for evaluation purposes. You can use it directly or create your own.
+
 ```env
 PORT=5000
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/comment-system
-JWT_SECRET=your-super-secret-jwt-key
+MONGODB_URI=your-mongodb-atlas-uri
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 JWT_EXPIRES_IN=7d
 CORS_ORIGIN=http://localhost:3000
 ```
+
+**MongoDB Atlas Configuration:**
+
+- Database is configured to accept connections from all IPs (0.0.0.0/0)
+- This is for evaluation purposes only
+- In production, restrict to specific IPs
+
+**Security Note:** Never commit `.env` files to public repositories in real projects. This is done here specifically for project evaluation as requested.
 
 ## Development
 

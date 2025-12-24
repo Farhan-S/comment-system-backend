@@ -19,11 +19,12 @@ const commentController = new CommentController();
 /**
  * @route   GET /api/comments
  * @desc    Get all comments with pagination and sorting
- * @access  Public
+ * @access  Private (authenticated users only)
  * @query   page, limit, sort, parentComment
  */
 router.get(
   "/",
+  authenticate,
   getCommentsValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.getComments(req, res, next)
@@ -32,10 +33,11 @@ router.get(
 /**
  * @route   GET /api/comments/:id
  * @desc    Get a single comment by ID
- * @access  Public
+ * @access  Private (authenticated users only)
  */
 router.get(
   "/:id",
+  authenticate,
   commentIdValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.getComment(req, res, next)
@@ -114,10 +116,11 @@ router.post(
 /**
  * @route   GET /api/comments/:id/replies
  * @desc    Get replies for a comment
- * @access  Public
+ * @access  Private (authenticated users only)
  */
 router.get(
   "/:id/replies",
+  authenticate,
   commentIdValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.getReplies(req, res, next)
