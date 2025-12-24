@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application } from "express";
 import helmet from "helmet";
@@ -23,6 +24,9 @@ app.use(
 // Body Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Cookie Parser Middleware
+app.use(cookieParser());
 
 // Apply general rate limiting to all routes
 app.use(generalLimiter);

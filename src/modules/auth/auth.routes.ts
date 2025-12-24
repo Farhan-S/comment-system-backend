@@ -45,4 +45,13 @@ router.get(
     authController.getCurrentUser(req, res, next)
 );
 
+/**
+ * @route   POST /api/auth/logout
+ * @desc    Logout user (clear cookie)
+ * @access  Public
+ */
+router.post("/logout", (req: Request, res: Response, next: NextFunction) =>
+  authController.logout(req, res, next)
+);
+
 export default router;

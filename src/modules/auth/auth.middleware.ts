@@ -17,17 +17,22 @@ export const authenticate = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // Get token from header
-    const authHeader = req.headers.authorization;
+    let token: string | undefined;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      throw new AppError("No token provided. Please authenticate.", 401);
+    // Check for token in cookie first
+    if (req.cookies && req.cookies["token"]) {
+      token = req.cookies["token"];
+    }
+    // Fallback to Authorization header (for API clients like Postman)
+    else if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
     }
 
-    const token = authHeader.split(" ")[1];
-
     if (!token) {
-      throw new AppError("Invalid token format", 401);
+      throw new AppError("No token provided. Please authenticate.", 401);
     }
 
     // Verify token

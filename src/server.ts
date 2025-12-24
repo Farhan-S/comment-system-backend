@@ -1,17 +1,26 @@
+import { createServer } from "http";
 import app from "./app";
 import { connectDB } from "./config/db";
 import { config } from "./config/env";
+import { initializeSocket } from "./config/socket";
 
 const startServer = async (): Promise<void> => {
   try {
     // Connect to MongoDB
     await connectDB();
 
-    // Start Express Server
-    const server = app.listen(config.port, () => {
+    // Create HTTP Server
+    const httpServer = createServer(app);
+
+    // Initialize Socket.io
+    initializeSocket(httpServer);
+
+    // Start Server
+    const server = httpServer.listen(config.port, () => {
       console.log(
         `Server running in ${config.nodeEnv} mode on port ${config.port}`
       );
+      console.log("Socket.io initialized for real-time updates");
     });
 
     // Handle unhandled promise rejections

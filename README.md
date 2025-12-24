@@ -4,7 +4,7 @@ A scalable RESTful API for a comment system built with TypeScript, Express, Mong
 
 ## Features
 
-- 🔐 JWT Authentication
+- 🔐 JWT Authentication with HTTP-Only Cookies
 - 💬 Comment CRUD operations
 - 👍👎 Like/Dislike functionality
 - 📄 Pagination and sorting
@@ -14,12 +14,15 @@ A scalable RESTful API for a comment system built with TypeScript, Express, Mong
 - 🚦 **Rate Limiting** - Protection against abuse and spam
 - 🎯 Input validation with express-validator
 - 🔄 Nested comments (replies)
+- 🔴 **Real-time Updates** - WebSocket support with Socket.io for instant updates
+- 🍪 **HTTP-Only Cookies** - Secure token storage protected against XSS attacks
 
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js, TypeScript
 - **Database**: MongoDB with Mongoose
 - **Authentication**: JWT (JSON Web Tokens)
+- **Real-time**: Socket.io for WebSocket connections
 - **Security**: Helmet, CORS, bcryptjs
 
 ## Prerequisites
@@ -98,7 +101,8 @@ npm start
 src/
 ├── config/                  # Configuration files
 │   ├── env.ts              # Environment variables
-│   └── db.ts               # MongoDB connection
+│   ├── db.ts               # MongoDB connection
+│   └── socket.ts           # Socket.io configuration ✨ NEW
 ├── modules/                # Feature modules
 │   ├── auth/               # Authentication module ✅
 │   │   ├── auth.controller.ts
@@ -108,7 +112,7 @@ src/
 │   │   └── auth.routes.ts
 │   ├── users/              # User model ✅
 │   │   └── user.model.ts
-│   └── comments/           # Comments module ✅
+│   └── comments/           # Comments module ✅ (with WebSocket events)
 │       ├── comment.model.ts
 │       ├── comment.service.ts
 │       ├── comment.controller.ts
@@ -120,18 +124,20 @@ src/
 │   ├── jwt.ts              # JWT helpers
 │   └── AppError.ts         # Custom error class
 ├── app.ts                  # Express app setup
-└── server.ts               # Server entry point
+└── server.ts               # Server entry point with Socket.io
 ```
 
 ## API Endpoints
 
 ### Authentication ✅ COMPLETED
 
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
+- `POST /api/auth/register` - Register new user (sets HTTP-only cookie)
+- `POST /api/auth/login` - Login user (sets HTTP-only cookie)
 - `GET /api/auth/me` - Get current user (protected)
+- `POST /api/auth/logout` - Logout user (clears cookie)
 
-📖 See [AUTH_API.md](./AUTH_API.md) for detailed API documentation and testing guide.
+📖 See [AUTH_API.md](./AUTH_API.md) for detailed API documentation and testing guide.  
+🍪 See [HTTP_COOKIE_AUTH.md](./HTTP_COOKIE_AUTH.md) for HTTP-only cookie implementation details.
 
 ### Comments ✅ COMPLETED
 
@@ -159,12 +165,26 @@ Intelligent rate limiting to protect against abuse:
 📖 See [RATE_LIMITING.md](./RATE_LIMITING.md) for detailed documentation.  
 🚀 See [RATE_LIMITING_QUICKSTART.md](./RATE_LIMITING_QUICKSTART.md) for quick testing guide.
 
+### WebSocket Real-Time Updates ✅ COMPLETED
+
+Real-time updates for all comment operations:
+
+- **comment:created** - New comments and replies
+- **comment:updated** - Comment edits
+- **comment:deleted** - Comment deletions
+- **comment:liked** - Like actions
+- **comment:disliked** - Dislike actions
+
+📖 See [WEBSOCKET_DOCUMENTATION.md](./WEBSOCKET_DOCUMENTATION.md) for complete WebSocket API documentation with client examples.
+
 ## Documentation
 
 - [AUTH_API.md](./AUTH_API.md) - Authentication API endpoints
+- [HTTP_COOKIE_AUTH.md](./HTTP_COOKIE_AUTH.md) - HTTP-only cookie authentication guide ✨
 - [COMMENTS_API.md](./COMMENTS_API.md) - Comments API endpoints
 - [VALIDATION.md](./VALIDATION.md) - Input validation rules
 - [RATE_LIMITING.md](./RATE_LIMITING.md) - Rate limiting configuration
+- [WEBSOCKET_DOCUMENTATION.md](./WEBSOCKET_DOCUMENTATION.md) - WebSocket real-time events ✨
 - [POSTMAN_GUIDE.md](./POSTMAN_GUIDE.md) - Postman collection guide
 - [TESTING_GUIDE.md](./TESTING_GUIDE.md) - Complete testing manual
 - [WORKFLOW_GUIDE.md](./WORKFLOW_GUIDE.md) - Visual workflow diagrams

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { config } from "../../config/env";
 import { AppError } from "../../utils/AppError";
 import { AuthService } from "./auth.service";
 
@@ -20,10 +21,20 @@ export class AuthController {
       // Validation is handled by middleware
       const result = await authService.register({ name, email, password });
 
+      // Set HTTP-only cookie
+      res.cookie("token", result.token, {
+        httpOnly: true,
+        secure: config.nodeEnv === "production", // HTTPS in production
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
       res.status(201).json({
         status: "success",
         message: "User registered successfully",
-        data: result,
+        data: {
+          user: result.user,
+        },
       });
     } catch (error) {
       next(error);
@@ -41,10 +52,20 @@ export class AuthController {
       // Validation is handled by middleware
       const result = await authService.login({ email, password });
 
+      // Set HTTP-only cookie
+      res.cookie("token", result.token, {
+        httpOnly: true,
+        secure: config.nodeEnv === "production", // HTTPS in production
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
       res.status(200).json({
         status: "success",
         message: "Login successful",
-        data: result,
+        data: {
+          user: result.user,
+        },
       });
     } catch (error) {
       next(error);
@@ -80,6 +101,32 @@ export class AuthController {
             email: user.email,
           },
         },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Logout user
+   * POST /api/auth/logout
+   */
+  async logout(
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      // Clear the cookie
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: config.nodeEnv === "production",
+        sameSite: "strict",
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Logout successful",
       });
     } catch (error) {
       next(error);

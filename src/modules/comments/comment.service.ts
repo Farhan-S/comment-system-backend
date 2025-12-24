@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { getIO } from "../../config/socket";
 import { AppError } from "../../utils/AppError";
 import { Comment, IComment } from "./comment.model";
 
@@ -191,6 +192,18 @@ export class CommentService {
     });
 
     await comment.populate("author", "name email");
+
+    // Emit Socket.io event for real-time updates
+    try {
+      const io = getIO();
+      io.emit("comment:created", {
+        comment: comment.toObject(),
+        parentComment: data.parentComment || null,
+      });
+    } catch (error) {
+      console.error("Socket.io emit error:", error);
+    }
+
     return comment;
   }
 
@@ -217,6 +230,16 @@ export class CommentService {
     await comment.save();
     await comment.populate("author", "name email");
 
+    // Emit Socket.io event for real-time updates
+    try {
+      const io = getIO();
+      io.emit("comment:updated", {
+        comment: comment.toObject(),
+      });
+    } catch (error) {
+      console.error("Socket.io emit error:", error);
+    }
+
     return comment;
   }
 
@@ -239,6 +262,17 @@ export class CommentService {
     await Comment.deleteMany({
       $or: [{ _id: commentId }, { parentComment: commentId }],
     });
+
+    // Emit Socket.io event for real-time updates
+    try {
+      const io = getIO();
+      io.emit("comment:deleted", {
+        commentId,
+        parentComment: comment.parentComment,
+      });
+    } catch (error) {
+      console.error("Socket.io emit error:", error);
+    }
   }
 
   /**
@@ -270,6 +304,19 @@ export class CommentService {
 
     await comment.save();
     await comment.populate("author", "name email");
+
+    // Emit Socket.io event for real-time updates
+    try {
+      const io = getIO();
+      io.emit("comment:liked", {
+        commentId: comment._id.toString(),
+        likesCount: comment.likes.length,
+        dislikesCount: comment.dislikes.length,
+        action: alreadyLiked ? "unlike" : "like",
+      });
+    } catch (error) {
+      console.error("Socket.io emit error:", error);
+    }
 
     return comment;
   }
@@ -305,6 +352,19 @@ export class CommentService {
 
     await comment.save();
     await comment.populate("author", "name email");
+
+    // Emit Socket.io event for real-time updates
+    try {
+      const io = getIO();
+      io.emit("comment:disliked", {
+        commentId: comment._id.toString(),
+        likesCount: comment.likes.length,
+        dislikesCount: comment.dislikes.length,
+        action: alreadyDisliked ? "undislike" : "dislike",
+      });
+    } catch (error) {
+      console.error("Socket.io emit error:", error);
+    }
 
     return comment;
   }

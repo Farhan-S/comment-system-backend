@@ -32,7 +32,7 @@ export const generalLimiter = rateLimit({
  */
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 login/register requests per windowMs
+  max: 100, // Limit each IP to 5 login/register requests per windowMs
   message:
     "Too many authentication attempts, please try again after 15 minutes.",
   standardHeaders: true,
@@ -48,7 +48,7 @@ export const authLimiter = rateLimit({
  */
 export const commentCreationLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 10, // Limit each IP to 10 comment creations per windowMs
+  max: 100, // Limit each IP to 100 comment creations per windowMs
   message: "Too many comments created, please slow down.",
   standardHeaders: true,
   legacyHeaders: false,
@@ -63,7 +63,7 @@ export const commentCreationLimiter = rateLimit({
  */
 export const voteLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 30, // Limit each IP to 30 vote actions per windowMs
+  max: 100, // Limit each IP to 100 vote actions per windowMs
   message: "Too many vote actions, please slow down.",
   standardHeaders: true,
   legacyHeaders: false,
@@ -77,7 +77,7 @@ export const voteLimiter = rateLimit({
  */
 export const modificationLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 20, // Limit each IP to 20 modifications per windowMs
+  max: 100, // Limit each IP to 100 modifications per windowMs
   message: "Too many modification requests, please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
@@ -91,7 +91,7 @@ export const modificationLimiter = rateLimit({
  */
 export const strictLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // Limit each IP to 3 requests per hour
+  max: 100, // Limit each IP to 100 requests per hour
   message:
     "Too many requests for this sensitive operation, please try again later.",
   standardHeaders: true,
