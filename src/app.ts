@@ -3,6 +3,7 @@ import express, { Application } from "express";
 import helmet from "helmet";
 import { config } from "./config/env";
 import { errorHandler, notFoundHandler } from "./middlewares/error.middleware";
+import authRoutes from "./modules/auth/auth.routes";
 
 const app: Application = express();
 
@@ -30,8 +31,8 @@ app.get("/health", (_req, res) => {
   });
 });
 
-// API Routes will be added here
-// app.use('/api/auth', authRoutes);
+// API Routes
+app.use("/api/auth", authRoutes);
 // app.use('/api/comments', commentRoutes);
 
 // Handle 404 routes

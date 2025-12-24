@@ -83,21 +83,37 @@ npm start
 
 ```
 src/
-├── config/          # Configuration files
-├── modules/         # Feature modules
-│   ├── auth/       # Authentication module
-│   └── comments/   # Comments module
-├── middlewares/    # Express middlewares
-├── utils/          # Utility functions
-├── app.ts          # Express app setup
-└── server.ts       # Server entry point
+├── config/              # Configuration files
+│   ├── env.ts          # Environment variables
+│   └── db.ts           # MongoDB connection
+├── modules/            # Feature modules
+│   ├── auth/           # Authentication module ✅
+│   │   ├── auth.controller.ts
+│   │   ├── auth.service.ts
+│   │   ├── auth.middleware.ts
+│   │   └── auth.routes.ts
+│   ├── users/          # User model ✅
+│   │   └── user.model.ts
+│   └── comments/       # Comments module (coming soon)
+├── middlewares/        # Express middlewares
+│   └── error.middleware.ts
+├── utils/              # Utility functions
+│   ├── jwt.ts          # JWT helpers
+│   └── AppError.ts     # Custom error class
+├── app.ts              # Express app setup
+└── server.ts           # Server entry point
 ```
 
 ## API Endpoints
 
-### Authentication
+### Authentication ✅ COMPLETED
 
 - `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/me` - Get current user (protected)
+
+📖 See [AUTH_API.md](./AUTH_API.md) for detailed API documentation and testing guide.
+
 - `POST /api/auth/login` - Login user
 
 ### Comments
