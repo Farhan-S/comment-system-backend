@@ -1,4 +1,9 @@
 import { NextFunction, Request, Response, Router } from "express";
+import {
+  commentCreationLimiter,
+  modificationLimiter,
+  voteLimiter,
+} from "../../middlewares/rateLimiter.middleware";
 import { authenticate } from "../auth/auth.middleware";
 import { CommentController } from "./comment.controller";
 import {
@@ -7,11 +12,6 @@ import {
   getCommentsValidation,
   updateCommentValidation,
 } from "./comment.validation";
-import {
-  commentCreationLimiter,
-  modificationLimiter,
-  voteLimiter,
-} from "../../middlewares/rateLimiter.middleware";
 
 const router = Router();
 const commentController = new CommentController();

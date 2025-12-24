@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
+import { authLimiter } from "../../middlewares/rateLimiter.middleware";
 import { AuthController } from "./auth.controller";
 import { authenticate } from "./auth.middleware";
 import { loginValidation, registerValidation } from "./auth.validation";
-import { authLimiter } from "../../middlewares/rateLimiter.middleware";
 
 const router = Router();
 const authController = new AuthController();

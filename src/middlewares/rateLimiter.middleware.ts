@@ -1,13 +1,13 @@
-import rateLimit from 'express-rate-limit';
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
+import rateLimit from "express-rate-limit";
 
 /**
  * Custom error handler for rate limit responses
  */
 const rateLimitHandler = (_req: Request, res: Response): void => {
   res.status(429).json({
-    status: 'error',
-    message: 'Too many requests, please try again later.',
+    status: "error",
+    message: "Too many requests, please try again later.",
   });
 };
 
@@ -19,7 +19,7 @@ const rateLimitHandler = (_req: Request, res: Response): void => {
 export const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
+  message: "Too many requests from this IP, please try again later.",
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   handler: rateLimitHandler,
@@ -33,7 +33,8 @@ export const generalLimiter = rateLimit({
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // Limit each IP to 5 login/register requests per windowMs
-  message: 'Too many authentication attempts, please try again after 15 minutes.',
+  message:
+    "Too many authentication attempts, please try again after 15 minutes.",
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: false, // Count successful requests
@@ -48,7 +49,7 @@ export const authLimiter = rateLimit({
 export const commentCreationLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 10, // Limit each IP to 10 comment creations per windowMs
-  message: 'Too many comments created, please slow down.',
+  message: "Too many comments created, please slow down.",
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true, // Don't count failed requests
@@ -63,7 +64,7 @@ export const commentCreationLimiter = rateLimit({
 export const voteLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 30, // Limit each IP to 30 vote actions per windowMs
-  message: 'Too many vote actions, please slow down.',
+  message: "Too many vote actions, please slow down.",
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true,
@@ -77,7 +78,7 @@ export const voteLimiter = rateLimit({
 export const modificationLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
   max: 20, // Limit each IP to 20 modifications per windowMs
-  message: 'Too many modification requests, please try again later.',
+  message: "Too many modification requests, please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
   handler: rateLimitHandler,
@@ -91,7 +92,8 @@ export const modificationLimiter = rateLimit({
 export const strictLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 3, // Limit each IP to 3 requests per hour
-  message: 'Too many requests for this sensitive operation, please try again later.',
+  message:
+    "Too many requests for this sensitive operation, please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
   handler: rateLimitHandler,
