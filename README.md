@@ -11,6 +11,9 @@ A scalable RESTful API for a comment system built with TypeScript, Express, Mong
 - 🔒 Role-based access control
 - ⚡ TypeScript for type safety
 - 🛡️ Security best practices (Helmet, CORS, Rate Limiting)
+- 🚦 **Rate Limiting** - Protection against abuse and spam
+- 🎯 Input validation with express-validator
+- 🔄 Nested comments (replies)
 
 ## Tech Stack
 
@@ -133,12 +136,28 @@ src/
 
 📖 See [COMMENTS_API.md](./COMMENTS_API.md) for detailed API documentation and testing guide.
 
-- `GET /api/comments` - Get all comments (with pagination/sorting)
-- `POST /api/comments` - Create new comment
-- `PUT /api/comments/:id` - Update comment
-- `DELETE /api/comments/:id` - Delete comment
-- `POST /api/comments/:id/like` - Like a comment
-- `POST /api/comments/:id/dislike` - Dislike a comment
+### Rate Limiting ✅ COMPLETED
+
+Intelligent rate limiting to protect against abuse:
+
+- **General API**: 100 requests per 15 minutes
+- **Authentication**: 5 attempts per 15 minutes (login/register)
+- **Comment Creation**: 10 comments per 5 minutes
+- **Vote Actions**: 30 likes/dislikes per 5 minutes
+- **Modifications**: 20 updates/deletes per 10 minutes
+
+📖 See [RATE_LIMITING.md](./RATE_LIMITING.md) for detailed documentation.  
+🚀 See [RATE_LIMITING_QUICKSTART.md](./RATE_LIMITING_QUICKSTART.md) for quick testing guide.
+
+## Documentation
+
+- [AUTH_API.md](./AUTH_API.md) - Authentication API endpoints
+- [COMMENTS_API.md](./COMMENTS_API.md) - Comments API endpoints
+- [VALIDATION.md](./VALIDATION.md) - Input validation rules
+- [RATE_LIMITING.md](./RATE_LIMITING.md) - Rate limiting configuration
+- [POSTMAN_GUIDE.md](./POSTMAN_GUIDE.md) - Postman collection guide
+- [TESTING_GUIDE.md](./TESTING_GUIDE.md) - Complete testing manual
+- [WORKFLOW_GUIDE.md](./WORKFLOW_GUIDE.md) - Visual workflow diagrams
 
 ## License
 

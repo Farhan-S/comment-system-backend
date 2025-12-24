@@ -3,6 +3,7 @@ import express, { Application } from "express";
 import helmet from "helmet";
 import { config } from "./config/env";
 import { errorHandler, notFoundHandler } from "./middlewares/error.middleware";
+import { generalLimiter } from "./middlewares/rateLimiter.middleware";
 import authRoutes from "./modules/auth/auth.routes";
 import commentRoutes from "./modules/comments/comment.routes";
 
@@ -22,6 +23,9 @@ app.use(
 // Body Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Apply general rate limiting to all routes
+app.use(generalLimiter);
 
 // Health Check Route
 app.get("/health", (_req, res) => {

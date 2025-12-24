@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { AuthController } from "./auth.controller";
 import { authenticate } from "./auth.middleware";
 import { loginValidation, registerValidation } from "./auth.validation";
+import { authLimiter } from "../../middlewares/rateLimiter.middleware";
 
 const router = Router();
 const authController = new AuthController();
@@ -13,6 +14,7 @@ const authController = new AuthController();
  */
 router.post(
   "/register",
+  authLimiter,
   registerValidation,
   (req: Request, res: Response, next: NextFunction) =>
     authController.register(req, res, next)
@@ -25,6 +27,7 @@ router.post(
  */
 router.post(
   "/login",
+  authLimiter,
   loginValidation,
   (req: Request, res: Response, next: NextFunction) =>
     authController.login(req, res, next)

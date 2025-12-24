@@ -7,6 +7,11 @@ import {
   getCommentsValidation,
   updateCommentValidation,
 } from "./comment.validation";
+import {
+  commentCreationLimiter,
+  modificationLimiter,
+  voteLimiter,
+} from "../../middlewares/rateLimiter.middleware";
 
 const router = Router();
 const commentController = new CommentController();
@@ -44,6 +49,7 @@ router.get(
 router.post(
   "/",
   authenticate,
+  commentCreationLimiter,
   createCommentValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.createComment(req, res, next)
@@ -57,6 +63,7 @@ router.post(
 router.put(
   "/:id",
   authenticate,
+  modificationLimiter,
   updateCommentValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.updateComment(req, res, next)
@@ -70,6 +77,7 @@ router.put(
 router.delete(
   "/:id",
   authenticate,
+  modificationLimiter,
   commentIdValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.deleteComment(req, res, next)
@@ -83,6 +91,7 @@ router.delete(
 router.post(
   "/:id/like",
   authenticate,
+  voteLimiter,
   commentIdValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.likeComment(req, res, next)
@@ -96,6 +105,7 @@ router.post(
 router.post(
   "/:id/dislike",
   authenticate,
+  voteLimiter,
   commentIdValidation,
   (req: Request, res: Response, next: NextFunction) =>
     commentController.dislikeComment(req, res, next)
