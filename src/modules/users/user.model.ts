@@ -57,11 +57,11 @@ userSchema.pre("save", async function (next) {
 });
 
 // Method to compare passwords
-userSchema.methods['comparePassword'] = async function (
+userSchema.methods["comparePassword"] = async function (
   candidatePassword: string
 ): Promise<boolean> {
   try {
-    return await bcrypt.compare(candidatePassword, this['password']);
+    return await bcrypt.compare(candidatePassword, this["password"]);
   } catch (error) {
     return false;
   }
