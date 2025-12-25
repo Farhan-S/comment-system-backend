@@ -25,7 +25,7 @@ export class AuthController {
       res.cookie("token", result.token, {
         httpOnly: true,
         secure: config.nodeEnv === "production", // HTTPS in production
-        sameSite: "strict",
+        sameSite: config.nodeEnv === "production" ? "none" : "strict", // 'none' for cross-site in production
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
@@ -56,7 +56,7 @@ export class AuthController {
       res.cookie("token", result.token, {
         httpOnly: true,
         secure: config.nodeEnv === "production", // HTTPS in production
-        sameSite: "strict",
+        sameSite: config.nodeEnv === "production" ? "none" : "strict", // 'none' for cross-site in production
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
@@ -121,7 +121,7 @@ export class AuthController {
       res.clearCookie("token", {
         httpOnly: true,
         secure: config.nodeEnv === "production",
-        sameSite: "strict",
+        sameSite: config.nodeEnv === "production" ? "none" : "strict",
       });
 
       res.status(200).json({
