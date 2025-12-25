@@ -15,8 +15,8 @@ const startServer = async (): Promise<void> => {
     // Initialize Socket.io
     initializeSocket(httpServer);
 
-    // Start Server
-    const server = httpServer.listen(config.port, () => {
+    // Start Server - Listen on 0.0.0.0 for CapRover/Docker compatibility
+    const server = httpServer.listen(config.port, "0.0.0.0", () => {
       console.log(
         `Server running in ${config.nodeEnv} mode on port ${config.port}`
       );
