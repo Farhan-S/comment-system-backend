@@ -10,6 +10,9 @@ import commentRoutes from "./modules/comments/comment.routes";
 
 const app: Application = express();
 
+// Trust proxy - Required for CapRover/nginx reverse proxy
+app.set("trust proxy", 1);
+
 // Security Middleware
 app.use(helmet());
 
