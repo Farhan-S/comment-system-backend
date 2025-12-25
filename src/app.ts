@@ -28,10 +28,15 @@ app.use(express.urlencoded({ extended: true }));
 // Cookie Parser Middleware
 app.use(cookieParser());
 
-// Apply general rate limiting to all routes
-app.use(generalLimiter);
+// Health Check Routes (before rate limiting)
+app.get("/", (_req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Comment System API is running",
+    timestamp: new Date().toISOString(),
+  });
+});
 
-// Health Check Route
 app.get("/health", (_req, res) => {
   res.status(200).json({
     status: "success",
@@ -39,6 +44,9 @@ app.get("/health", (_req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// Apply general rate limiting to all routes
+app.use(generalLimiter);
 
 // API Routes
 app.use("/api/auth", authRoutes);
